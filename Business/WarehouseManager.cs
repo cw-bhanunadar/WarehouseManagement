@@ -8,10 +8,14 @@ namespace SuprDaily.Business
 {
     public class WarehouseManager : IWarehouseManager
     {
-        private Dictionary<int, Warehouse> warehouseList;
-        public WarehouseManager()
+        private Dictionary<int, Warehouse> warehouseList = new Dictionary<int, Warehouse>();
+        private static WarehouseManager manager = new WarehouseManager();
+        private WarehouseManager()
         {
-            warehouseList = new Dictionary<int, Warehouse>();
+        }
+        public static WarehouseManager GetInstance()
+        {
+            return manager;
         }
         public bool AddWarehouse(int id)
         {
@@ -19,14 +23,18 @@ namespace SuprDaily.Business
             {
                 return false;
             }
-            warehouseList.Add(id, new Warehouse());
+            warehouseList.Add(id, new Warehouse{
+                Id = id
+            });
             return true;
         }
         public bool AddItemToWarehouse(int id, WarehouseItem item, string date)
         {
             if(!warehouseList.ContainsKey(id))
             {
-                warehouseList.Add(id, new Warehouse());
+                warehouseList[id] = new Warehouse{
+                    Id = id
+                };
             }
             var warehouse = warehouseList[id];
             var warehouseAvailaibility = warehouse.DailyStats;
@@ -43,7 +51,7 @@ namespace SuprDaily.Business
             {
                 itemList.Items[item.ItemId] = item;
             }
-            Console.WriteLine("Added Item");
+            Console.WriteLine("Added Item "+ warehouseList[id].Id+ " "+ id);
             return true;
         }
         public bool AddCategoryToWarehouse(int id, WarehouseCategory category, string date)
@@ -74,7 +82,7 @@ namespace SuprDaily.Business
         {
             if(!IsOrderValid(orders))
             {
-                Console.WriteLine("Inavlid order");
+                Console.WriteLine("Invalid order");
                 return false;
             }
             int warehouseId = orders.WarehouseId;
@@ -123,7 +131,7 @@ namespace SuprDaily.Business
             if(!warehouseList.ContainsKey(warehouseId))
             {
                 // No warehouse of that Id present
-                Console.WriteLine("No warehouse found"+ warehouseId);
+                Console.WriteLine("No warehouse found "+ warehouseId);
                 return false;
             }
             var warehouseAvailaibility = warehouseList[warehouseId].DailyStats[orders.DeliveryDate];
