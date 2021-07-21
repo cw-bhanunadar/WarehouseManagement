@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\bhanu\\Documents\\Work\\Microsoft\\Microsoft.csproj": {}
+    "C:\\Users\\bhanu\\Documents\\Work\\Microsoft\\Microsoft.csproj": {}
   },
   "projects": {
-    "c:\\Users\\bhanu\\Documents\\Work\\Microsoft\\Microsoft.csproj": {
+    "C:\\Users\\bhanu\\Documents\\Work\\Microsoft\\Microsoft.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\bhanu\\Documents\\Work\\Microsoft\\Microsoft.csproj",
+        "projectUniqueName": "C:\\Users\\bhanu\\Documents\\Work\\Microsoft\\Microsoft.csproj",
         "projectName": "Microsoft",
-        "projectPath": "c:\\Users\\bhanu\\Documents\\Work\\Microsoft\\Microsoft.csproj",
+        "projectPath": "C:\\Users\\bhanu\\Documents\\Work\\Microsoft\\Microsoft.csproj",
         "packagesPath": "C:\\Users\\bhanu\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\bhanu\\Documents\\Work\\Microsoft\\obj\\",
+        "outputPath": "C:\\Users\\bhanu\\Documents\\Work\\Microsoft\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\bhanu\\AppData\\Roaming\\NuGet\\NuGet.Config"

@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SuprDaily.Business;
 using SuprDaily.Entities;
+using SuprDaily.Entities.Warehouse;
 using SuprDaily.Model;
 
 namespace SuprDaily.Controller
@@ -15,6 +16,7 @@ namespace SuprDaily.Controller
         [HttpGet, Route("api/orders/availability")]
         public async Task<ActionResult> CheckOrderAvailability(Order orders)
         {
+            PopulateData();
             if(orders == null)
             {
                 return BadRequest();
@@ -42,6 +44,20 @@ namespace SuprDaily.Controller
             response.Data.Reserved = result;
             response.Data.Message = result ? "Success" : "Insufficient Quantities";
             return response;
+        }
+        private void PopulateData()
+        {
+            WarehouseManager manager = new WarehouseManager();
+            var item = new WarehouseItem{
+                ItemId = 1,
+                TotalQuantity = 3
+            };
+            manager.AddItemToWarehouse(100, item, "2020-10-13");
+            var category = new WarehouseCategory {
+                CategoryId = Entities.Enums.Category.F_N_V,
+                QuantityLimit = 3
+            };
+            manager.AddCategoryToWarehouse(100, category, "2020-10-13");
         }
     }
 }

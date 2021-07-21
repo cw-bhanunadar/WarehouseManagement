@@ -21,12 +21,50 @@ namespace SuprDaily.Business
             warehouseList.Add(id, new Warehouse());
             return true;
         }
-        public bool AddItemToWarehouse(int id, WarehouseItem item)
+        public bool AddItemToWarehouse(int id, WarehouseItem item, string date)
         {
+            if(!warehouseList.ContainsKey(id))
+            {
+                warehouseList.Add(id, new Warehouse());
+            }
+            var warehouse = warehouseList[id];
+            var warehouseAvailaibility = warehouse.DailyStats;
+            if(!warehouseAvailaibility.ContainsKey(date))
+            {
+                warehouseAvailaibility[date] = new WarehouseDayWiseList();
+            }
+            var itemList = warehouseAvailaibility[date];
+            if(itemList.Items.ContainsKey(item.ItemId))
+            {
+                itemList.Items[item.ItemId].TotalQuantity += item.TotalQuantity;
+            }
+            else
+            {
+                itemList.Items[item.ItemId] = item;
+            }
             return true;
         }
-        public bool AddCategoryToWarehouse(int id, WarehouseCategory category)
+        public bool AddCategoryToWarehouse(int id, WarehouseCategory category, string date)
         {
+            if(!warehouseList.ContainsKey(id))
+            {
+                warehouseList.Add(id, new Warehouse());
+            }
+            var warehouse = warehouseList[id];
+            var warehouseAvailaibility = warehouse.DailyStats;
+            if(!warehouseAvailaibility.ContainsKey(date))
+            {
+                warehouseAvailaibility[date] = new WarehouseDayWiseList();
+            }
+            var itemList = warehouseAvailaibility[date];
+            if(itemList.Categories.ContainsKey((int)category.CategoryId))
+            {
+                itemList.Categories[(int)category.CategoryId].QuantityLimit += category.QuantityLimit;
+            }
+            else
+            {
+                itemList.Categories[(int)category.CategoryId] = category;
+            }
             return true;
         }
         public bool CheckIfOrderCanBeServed(Order orders)
