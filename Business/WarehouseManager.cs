@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using SuprDaily.Business.Interface;
 using SuprDaily.Entities;
@@ -42,6 +43,7 @@ namespace SuprDaily.Business
             {
                 itemList.Items[item.ItemId] = item;
             }
+            Console.WriteLine("Added Item");
             return true;
         }
         public bool AddCategoryToWarehouse(int id, WarehouseCategory category, string date)
@@ -57,21 +59,22 @@ namespace SuprDaily.Business
                 warehouseAvailaibility[date] = new WarehouseDayWiseList();
             }
             var itemList = warehouseAvailaibility[date];
-            if(itemList.Categories.ContainsKey((int)category.CategoryId))
+            if(itemList.Categories.ContainsKey(category.CategoryId))
             {
-                itemList.Categories[(int)category.CategoryId].QuantityLimit += category.QuantityLimit;
+                itemList.Categories[category.CategoryId].QuantityLimit += category.QuantityLimit;
             }
             else
             {
-                itemList.Categories[(int)category.CategoryId] = category;
+                itemList.Categories[category.CategoryId] = category;
             }
+             Console.WriteLine("Added Category");
             return true;
         }
         public bool CheckIfOrderCanBeServed(Order orders)
         {
-            
             if(!IsOrderValid(orders))
             {
+                Console.WriteLine("Inavlid order");
                 return false;
             }
             int warehouseId = orders.WarehouseId;
@@ -80,15 +83,17 @@ namespace SuprDaily.Business
             var categoryList = warehouseAvailaibility.Categories;
             foreach(var item in orders.Items)
             {
-                if(!itemList.ContainsKey(item.Id) || !categoryList.ContainsKey((int)item.Category))
+                if(!itemList.ContainsKey(item.Id) || !categoryList.ContainsKey(item.Category))
                 {
+                    Console.WriteLine("Item not found");
                     // Item or category present
                     return false;
                 }
                 var purchaseItem = itemList[item.Id];
-                var purchaseCategory = categoryList[(int)item.Category];
+                var purchaseCategory = categoryList[item.Category];
                 if(!IsQuantityValid(purchaseItem, purchaseCategory, item))
                 {
+                    Console.WriteLine("Item cannot served");
                     return false;
                 }
             }
@@ -107,7 +112,7 @@ namespace SuprDaily.Business
             foreach(var item in orders.Items)
             {
                 var purchaseItem = itemList[item.Id];
-                var purchaseCategory = categoryList[(int)item.Category];
+                var purchaseCategory = categoryList[item.Category];
                 ReserveOrder(purchaseItem, purchaseCategory, item);
             }
             return true;
@@ -118,12 +123,14 @@ namespace SuprDaily.Business
             if(!warehouseList.ContainsKey(warehouseId))
             {
                 // No warehouse of that Id present
+                Console.WriteLine("No warehouse found"+ warehouseId);
                 return false;
             }
             var warehouseAvailaibility = warehouseList[warehouseId].DailyStats[orders.DeliveryDate];
             if(warehouseAvailaibility == null)
             {
                 // No items registered for that day
+                Console.WriteLine("No Date "+ warehouseId);
                 return false;
             }
             return true;

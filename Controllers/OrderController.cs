@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SuprDaily.Business;
@@ -19,8 +20,10 @@ namespace SuprDaily.Controller
             PopulateData();
             if(orders == null)
             {
+                Console.WriteLine("Order recieved null");
                 return BadRequest();
             }
+            Console.WriteLine("Order recieved");
             WarehouseManager manager = new WarehouseManager();
             var result = new AvailabilityResult();
             result.Result = manager.CheckIfOrderCanBeServed(orders);
@@ -33,6 +36,7 @@ namespace SuprDaily.Controller
             {
                 return BadRequest();
             }
+            Console.WriteLine("Order recieved");
             WarehouseManager manager = new WarehouseManager();
             var result = manager.ReserveOrder(orders);
             var response = GetResponseObject(result);
@@ -54,7 +58,7 @@ namespace SuprDaily.Controller
             };
             manager.AddItemToWarehouse(100, item, "2020-10-13");
             var category = new WarehouseCategory {
-                CategoryId = Entities.Enums.Category.F_N_V,
+                CategoryId = "F_N_V",
                 QuantityLimit = 3
             };
             manager.AddCategoryToWarehouse(100, category, "2020-10-13");
