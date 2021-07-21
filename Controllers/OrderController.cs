@@ -1,6 +1,8 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using SuprDaily.Business;
 using SuprDaily.Entities;
+using SuprDaily.Model;
 
 namespace SuprDaily.Controller
 {
@@ -10,14 +12,36 @@ namespace SuprDaily.Controller
         {
             return View();
         }
-        [HttpPost, Route("api/orders/availability")]
+        [HttpGet, Route("api/orders/availability")]
         public async Task<ActionResult> CheckOrderAvailability(Order orders)
         {
             if(orders == null)
             {
                 return BadRequest();
             }
-            return Json(true);
+            WarehouseManager manager = new WarehouseManager();
+            var result = new AvailabilityResult();
+            result.Result = manager.CheckIfOrderCanBeServed(orders);
+            return Json(result);
+        }
+        [HttpPost, Route("api/orders/reserve")]
+        public async Task<ActionResult> ReserveOrder(Order orders)
+        {
+            if(orders == null)
+            {
+                return BadRequest();
+            }
+            WarehouseManager manager = new WarehouseManager();
+            var result = manager.ReserveOrder(orders);
+            var response = GetResponseObject(result);
+            return Json(response);
+        }
+        private ReserveOrderResponse GetResponseObject(bool result)
+        {
+            var response = new ReserveOrderResponse();
+            response.Data.Reserved = result;
+            response.Data.Message = result ? "Success" : "Insufficient Quantities";
+            return response;
         }
     }
 }

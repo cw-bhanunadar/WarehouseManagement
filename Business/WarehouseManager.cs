@@ -1,10 +1,11 @@
 using System.Collections.Generic;
+using SuprDaily.Business.Interface;
 using SuprDaily.Entities;
 using SuprDaily.Entities.Warehouse;
 
 namespace SuprDaily.Business
 {
-    public class WarehouseManager
+    public class WarehouseManager : IWarehouseManager
     {
         private Dictionary<int, Warehouse> warehouseList;
         public WarehouseManager()
@@ -55,7 +56,7 @@ namespace SuprDaily.Business
             }
             return true;
         }
-        public bool ReserveAnOrder(Order orders)
+        public bool ReserveOrder(Order orders)
         {
             if(!CheckIfOrderCanBeServed(orders))
             {
