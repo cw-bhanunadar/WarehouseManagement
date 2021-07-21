@@ -7,6 +7,6 @@ namespace SuprDaily.Entities
         public int CustomerId { get; set; }
         public string DeliveryDate { get; set; }
         public int WarehouseId { get; set; }
-        public List<Item> Items { get; set; }
+        public List<Item> Items { get; set; } = new List<Item>();
     }
 }
